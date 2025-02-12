@@ -1,0 +1,101 @@
+
+
+
+const data = [
+  {
+    id: 1,
+    name: "Raja Sultan",
+    age: 24,
+    date: "10-05-2024",
+    phone: 9876543210,
+    email: "abc",
+  },
+  {
+    id: 2,
+    name: "Raja Sultan",
+    age: 24,
+    date: "10-05-2024",
+    phone: 9876543210,
+    email: "abc",
+  },
+  {
+    id: 3,
+    name: "Raja Sultan",
+    age: 24,
+    date: "10-05-2024",
+    phone: 9876543210,
+    email: "abc",
+  },
+];
+
+
+  const columns = useMemo(() => [
+    {
+      accessorFn: (row) => row?.name ?? "-",
+      id: "name",
+      cell: (info) => info.getValue(),
+      header: () => <span>Name</span>,
+      isSortable: false,
+    },
+    {
+      accessorFn: (row) => row.age ?? "-",
+      id: "age",
+      cell: (info) => info.getValue(),
+      header: () => <span>Age</span>,
+      isSortable: false,
+    },
+    {
+      accessorFn: (row) => row.date ?? "-",
+      id: "date",
+      cell: (info) => {
+        return <div>{dayjs(info.getValue()).format("DD-MM-YYYY") ?? "-"}</div>;
+      },
+      header: () => <span>Date</span>,
+      isSortable: false,
+    },
+    {
+      accessorFn: (row) => row.phone ?? "-",
+      id: "phone",
+      cell: (info) => info.getValue(),
+      header: () => <span>Phone</span>,
+      isSortable: false,
+    },
+    {
+      accessorFn: (row) => row.email ?? "-",
+      id: "email",
+      cell: (info) => info.getValue(),
+      header: () => <span>Email</span>,
+      isSortable: false,
+    },
+  ]);
+
+
+
+
+  const [params, setParams] = useState({
+    page: 1,
+    offset: 0,
+    limit:0,
+  });
+
+
+
+
+<CustomTable
+        data={data}
+        columns={columns}
+        isLoading={false}
+        isFetching={true}
+        isError={false}
+        isPagination
+        isSuccess={true}
+        showSerialNo
+        //totalPages={data?.data?.meta?.pages ?? 0}
+        // currentPage={data?.data?.meta?.page ?? 1}
+        onPageChange={(onPageData) => {
+          setParams({
+            page: onPageData,
+            offset: (onPageData - 1) * 10,
+          });
+        }}
+      />

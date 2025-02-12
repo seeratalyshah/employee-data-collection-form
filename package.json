@@ -3,12 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@hookform/resolvers": "^3.10.0",
     "cra-template": "1.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.54.2",
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.1.5",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "react-scroll": "^1.9.0",
+    "react-select": "^5.10.0",
+    "react-signature-canvas": "^1.0.7",
+    "react-tailwindcss-datepicker": "^1.6.6",
+    "yup": "^1.6.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -33,5 +40,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.3.5"
   }
 }
