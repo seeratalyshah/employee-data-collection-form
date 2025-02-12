@@ -735,7 +735,7 @@ const EmployeeInformation = () => {
             </div>
           </Card>
           <br />
-          <Card title=" Banking & Salary Information">
+          <Card title="Banking & Salary Information">
             <div className="flex flex-col gap-4 px-1 pr-4">
               <div className="flex flex-row xs:flex-col gap-6">
                 <div className="w-full">
