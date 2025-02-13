@@ -9,7 +9,12 @@ import { RHFRadioGroup } from "../common/rhf-grouped-radio";
 import { RHFUploadFile } from "../common/custom-upload-file";
 import { RhfSignaturePad } from "../common/rhf-signature-pad";
 import { IoMdCloseCircle } from "react-icons/io";
-import { areasOfExperties, documents, radioOptions, skillCategories } from "./data";
+import {
+  areasOfExperties,
+  documents,
+  radioOptions,
+  skillCategories,
+} from "./data";
 import { IoAddCircle, IoCloseCircle } from "react-icons/io5";
 import Card from "../common/custom-card";
 import Header from "../common/header";
@@ -33,8 +38,9 @@ const EmployeeInformation = () => {
     preview,
     fullName,
     sameAsCurrent,
-    currentAddress,
     hasValidDepartment,
+    anyResearchProjects,
+    anyArticles,
   } = useEmployeeInformation();
 
   return (
@@ -159,7 +165,7 @@ const EmployeeInformation = () => {
                     name="permanentAddress"
                     placeholder="Permanent Address"
                     outerLabel="Permanent Address"
-                    defaultValue={sameAsCurrent ? currentAddress : ""}
+                    disabled={sameAsCurrent}
                     required
                   />
                   <div className="absolute right-0 top-0 flex items-center">
@@ -375,7 +381,7 @@ const EmployeeInformation = () => {
             </div>
             {qualifications?.map((field, index) => (
               <>
-                <div className="flex items-center gap-4 mt-2" key={field.id}>
+                <div className="flex items-center gap-4 mt-2" key={index}>
                   <div className="w-[100%] flex flex-grid grid-cols-3 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xs:gap-2">
                     <div className="w-full">
                       <RHFSelect
@@ -463,7 +469,7 @@ const EmployeeInformation = () => {
             </div>
             {workExperiences?.map((field, index) => (
               <>
-                <div className="flex items-center gap-4 mt-2" key={field.id}>
+                <div className="flex items-center gap-4 mt-2" key={index}>
                   <div className="w-[100%] flex flex-grid grid-cols-3 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xs:gap-2">
                     <div className="w-full">
                       <RHFInputField
@@ -535,7 +541,8 @@ const EmployeeInformation = () => {
             </div>
             {!hasValidDepartment && (
               <p className="text-red-600 my-2 bg-red-100 inline-block p-2 rounded w-full">
-                Please ensure at least one core area of expertise is checked before proceeding
+                Please ensure at least one core area of expertise is checked
+                before proceeding
               </p>
             )}
             <div className="my-10">
@@ -543,9 +550,9 @@ const EmployeeInformation = () => {
                 A. Core Areas of Expertise (Tick all that apply)
               </p>
               <div className="ml-6">
-                {areasOfExperties?.map((item, index) => (
+                {areasOfExperties?.map((item) => (
                   <RHFCheckBox
-                    key={index}
+                    key={item.id}
                     name={`department${item.id}`}
                     label={item.label}
                   />
@@ -620,7 +627,6 @@ const EmployeeInformation = () => {
                   name="additionalSkills"
                   placeholder="Additional Skills"
                   outerLabel="Additional Skills"
-                  required
                 />
               </div>
             </div>
@@ -653,20 +659,25 @@ const EmployeeInformation = () => {
                 </div>
                 <div className="flex flex-row xs:flex-col gap-6">
                   <div className="w-full">
-                    <RHFTextArea
-                      name="researchAreas"
-                      placeholder="If yes, specify topics/research areas"
-                      outerLabel="If yes, specify topics/research areas"
-                      required
-                    />
+                    {anyResearchProjects === "yes" && (
+                      <RHFTextArea
+                        name="researchAreas"
+                        placeholder="If yes, specify topics/research areas"
+                        outerLabel="If yes, specify topics/research areas"
+                        required
+                      />
+                    )}
                   </div>
+
                   <div className="w-full">
-                    <RHFTextArea
-                      name="links"
-                      placeholder="If yes, provide details or links"
-                      outerLabel="If yes, provide details or links"
-                      required
-                    />
+                    {anyArticles === "yes" && (
+                      <RHFTextArea
+                        name="links"
+                        placeholder="If yes, provide details or links"
+                        outerLabel="If yes, provide details or links"
+                        required
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -859,17 +870,17 @@ const EmployeeInformation = () => {
               </div>
               {documents.map((doc, index) => (
                 <div
-                  key={index}
+                  key={doc.id}
                   className="grid grid-cols-2 items-center border-b py-2 text-sm"
                 >
-                  <span className="font-medium">{doc}</span>
+                  <span className="font-medium">{doc.label}</span>
                   <div className="flex items-center space-x-4">
                     <RHFRadioGroup
                       options={[
                         { label: "Uploaded", value: "uploaded" },
                         { label: "Pending", value: "pending" },
                       ]}
-                      name={`documents.${index}`} // Unique name for each skill
+                      name={`documents.${index}.status`} // Reference status correctly
                       required
                     />
                   </div>
@@ -914,6 +925,7 @@ const EmployeeInformation = () => {
                       <RHFInputField
                         name={`attachments[${index}.fileName]`}
                         placeholder="Enter File Name"
+                        required
                       />
                       <button
                         onClick={() => {

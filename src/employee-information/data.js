@@ -23,46 +23,50 @@ export const radioOptions = [
 
 export const skillCategories = [
   {
+    id: 1,
     category: "Digital & IT Skills",
     skills: [
-      { name: "Data Analysis (Excel, Power BI, etc.)", value: "data_analysis" },
-      { name: "GIS Mapping", value: "gis_mapping" },
-      { name: "Software Development", value: "software_dev" },
-      { name: "Website & App Development", value: "web_app_dev" },
-      { name: "AI & Machine Learning", value: "ai_ml" },
+      { name: "Data Analysis (Excel, Power BI, etc.)", value: "1" },
+      { name: "GIS Mapping", value: "2" },
+      { name: "Software Development", value: "3" },
+      { name: "Website & App Development", value: "4" },
+      { name: "AI & Machine Learning", value: "5" },
     ],
   },
   {
+    id: 2,
     category: "Research & Writing",
     skills: [
-      { name: "Proposal Writing", value: "proposal_writing" },
-      { name: "Policy Analysis", value: "policy_analysis" },
-      { name: "Survey & Report Writing", value: "survey_report_writing" },
+      { name: "Proposal Writing", value: "6" },
+      { name: "Policy Analysis", value: "7" },
+      { name: "Survey & Report Writing", value: "8" },
     ],
   },
   {
+    id: 3,
     category: "Leadership & Management",
     skills: [
-      { name: "People Management", value: "people_management" },
-      { name: "Public Speaking & Training", value: "public_speaking" },
+      { name: "People Management", value: "9" },
+      { name: "Public Speaking & Training", value: "10" },
     ],
   },
   {
+    id: 4,
     category: "Financial & Business",
     skills: [
-      { name: "Budgeting & Financial Modelling", value: "budgeting_finance" },
+      { name: "Budgeting & Financial Modelling", value: "11" },
     ],
   },
 ];
 
 export const documents = [
-  "Updated CV",
-  "Passport / National ID Copy",
-  "DBS / Police Clearance Certificate",
-  "Work Permit / Visa (if applicable)",
-  "Education Certificates & Degrees",
-  "Signed Employment Contract",
-  "Professional Certifications (if any)",
+  {id: 1, label:"Updated CV"},
+  {id: 2, label: "Passport / National ID Copy"},
+  {id: 3, label: "DBS / Police Clearance Certificate"},
+  {id: 4, label: "Work Permit / Visa (if applicable)"},
+  {id: 5, label: "Education Certificates & Degrees"},
+  {id: 6, label: "Signed Employment Contract"},
+  {id: 7, label: "Professional Certifications (if any)"},
 ];
 
 export const areasOfExperties = [

@@ -2,45 +2,47 @@ import * as Yup from "yup";
 import { documents, skillCategories } from "./data";
 
 export const schema = Yup.object().shape({
-  // fullName: Yup.string().required("Field Required"),
-  // preferedName: Yup.string().required("Field Required"),
-  // nationalID: Yup.string().required("Field Required"),
-  // currentAddress: Yup.string().required("Field Required"),
-  // permanentAddress: Yup.string().required("Field Required"),
-  // mobileNumber: Yup.string().required("Field Required"),
-  // whatsAppNumber: Yup.string().required("Field Required"),
-  // personalEmail: Yup.string().required("Field Required"),
-  // officialEmail: Yup.string().required("Field Required"),
-  // IDExpiryDate: Yup.object()
-  //   .shape({
-  //     startDate: Yup.date().required("Field required"),
-  //   })
-  //   .required("Field required"),
-  // dateOfBirth: Yup.object()
-  //   .shape({
-  //     startDate: Yup.date().required("Field required"),
-  //   })
-  //   .required("Field required"),
-  // countryofIssue: Yup.object()
-  //   .shape({
-  //     value: Yup.string().required("Field Required"),
-  //   })
-  //   .required("Field required"),
-  // nationality: Yup.object()
-  //   .shape({
-  //     value: Yup.string().required("Field Required"),
-  //   })
-  //   .required("Field required"),
-  // gender: Yup.object()
-  //   .shape({
-  //     value: Yup.string().required("Field Required"),
-  //   })
-  //   .required("Field required"),
-  // maritalStatus: Yup.object()
-  //   .shape({
-  //     value: Yup.string().required("Field Required"),
-  //   })
-  //   .required("Field required"),
+  // Personal Information
+  profilePic: Yup.mixed().required("Profile picture is required"),
+  fullName: Yup.string().required("Field Required"),
+  preferedName: Yup.string().required("Field Required"),
+  nationalID: Yup.string().required("Field Required"),
+  currentAddress: Yup.string().required("Field Required"),
+  permanentAddress: Yup.string().required("Field Required"),
+  mobileNumber: Yup.string().required("Field Required"),
+  whatsAppNumber: Yup.string().required("Field Required"),
+  personalEmail: Yup.string().required("Field Required"),
+  officialEmail: Yup.string().required("Field Required"),
+  IDExpiryDate: Yup.object()
+    .shape({
+      startDate: Yup.date().required("Field required"),
+    })
+    .required("Field required"),
+  dateOfBirth: Yup.object()
+    .shape({
+      startDate: Yup.date().required("Field required"),
+    })
+    .required("Field required"),
+  countryofIssue: Yup.object()
+    .shape({
+      value: Yup.string().required("Field Required"),
+    })
+    .required("Field required"),
+  nationality: Yup.object()
+    .shape({
+      value: Yup.string().required("Field Required"),
+    })
+    .required("Field required"),
+  gender: Yup.object()
+    .shape({
+      value: Yup.string().required("Field Required"),
+    })
+    .required("Field required"),
+  maritalStatus: Yup.object()
+    .shape({
+      value: Yup.string().required("Field Required"),
+    })
+    .required("Field required"),
 
   // jobTitle: Yup.string().required("Field Required"),
   // departmentName: Yup.string().required("Field Required"),
@@ -111,21 +113,39 @@ export const schema = Yup.object().shape({
   //   )
   //   .required("Field Required"),
 
-  // skills: Yup.object().shape({
-  //   ...skillCategories.reduce((acc, category) => {
-  //     category.skills.forEach((skill) => {
-  //       acc[skill.value] = Yup.string().required("Field Required");
-  //     });
-  //     return acc;
-  //   }, {}),
-  // }),
+  // Employment skills
+  skills: Yup.object().shape(
+    skillCategories.reduce((acc, category) => {
+      category.skills.forEach((skill) => {
+        acc[skill.value] = Yup.string().required("Field Required");
+      });
+      return acc;
+    }, {})
+  ),
 
-  // additionalSkills: Yup.string().required("Field Required"),
+  anyResearchProjects: Yup.string().required("Field Required"),
+  anyArticles: Yup.string().required("Field Required"),
 
-  // anyResearchProjects: Yup.string().required("Field Required"),
-  // anyArticles: Yup.string().required("Field Required"),
-  // researchAreas: Yup.string().required("Field Required"),
-  // links: Yup.string().required("Field Required"),
+  researchAreas: Yup.string().when("anyResearchProjects", {
+    is: "yes",
+    then: (schema) => schema.required("Research area is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+
+  links: Yup.string().when("anyArticles", {
+    is: "yes",
+    then: (schema) => schema.required("Links are required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+
+  departments: Yup.array()
+    .min(1, "At least one department must be selected")
+    .of(
+      Yup.object().shape({
+        id: Yup.number().required(),
+        label: Yup.string().required(),
+      })
+    ),
 
   // contactName: Yup.string().required("Field Required"),
   // relationship: Yup.string().required("Field Required"),
@@ -147,19 +167,36 @@ export const schema = Yup.object().shape({
   // specialSkills: Yup.string().required("Field Required"),
   // anyMedicalConditions: Yup.string().required("Field Required"),
 
-  // documents: Yup.array()
-  //   .of(
-  //     Yup.object().shape({
-  //       status: Yup.string()
-  //         .oneOf(["uploaded", "pending"], "Status must be 'uploaded' or 'pending'")
-  //         .required("Field Required"),
-  //     })
-  //   )
-  //   .required("Field Required"),
+  documents: Yup.array()
+    .of(
+      Yup.object().shape({
+        id: Yup.number().required(),
+        label: Yup.string().required(),
+        status: Yup.string()
+          .oneOf(
+            ["uploaded", "pending"],
+            "Status must be 'uploaded' or 'pending'"
+          )
+          .required("Upload status is required"),
+      })
+    )
+    .min(1, "At least one document must be selected"),
+  attachments: Yup.array().of(
+    Yup.object().shape({
+      file: Yup.mixed().nullable(), // File can be null
+      fileName: Yup.string().when("file", (file, schema) => {
+        return file
+          ? schema.required("File name is required")
+          : schema.notRequired();
+      }),
+    })
+  ),
+  signature: Yup.string().required("Signature is required"),
 });
 
 export const defaultValues = {
   // Personal Information
+  profilePic: null,
   fullName: "",
   preferedName: "",
   nationalID: "",
@@ -201,10 +238,7 @@ export const defaultValues = {
     });
     return acc;
   }, {}),
-
   additionalSkills: "",
-
-  // Research Background
   anyResearchProjects: "",
   anyArticles: "",
   researchAreas: "",
@@ -231,8 +265,9 @@ export const defaultValues = {
   specialSkills: "",
   anyMedicalConditions: "",
 
-  // Documents Section
-  documents: documents.map(() => ({
-    status: "pending", // Default status for each document
+  documents: documents.map((doc) => ({
+    id: doc.id,
+    label: doc.label,
+    status: "", // Empty initially, will be filled by radio buttons
   })),
 };

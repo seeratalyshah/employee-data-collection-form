@@ -3,6 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import { schema, defaultValues } from "./employee-information-schema";
 import { useEffect, useState } from "react";
+import { areasOfExperties, skillCategories } from "./data";
 
 export function useEmployeeInformation() {
   const [preview, setPreview] = useState(null);
@@ -12,11 +13,13 @@ export function useEmployeeInformation() {
     resolver: yupResolver(schema),
     defaultValues,
   });
-  const { handleSubmit, control, watch } = methods;
+  const { handleSubmit, control, watch, setValue } = methods;
   const profilePic = watch("profilePic");
   const fullName = watch("fullName");
   const sameAsCurrent = watch("sameAsCurrent");
   const currentAddress = watch("currentAddress");
+  const anyResearchProjects = watch("anyResearchProjects");
+  const anyArticles = watch("anyArticles");
   const values = watch();
 
   // Scroll to form error
@@ -37,15 +40,20 @@ export function useEmployeeInformation() {
     }
   };
 
+  // Automatically update permanentAddress when sameAsCurrent is checked
+  useEffect(() => {
+    if (sameAsCurrent) {
+      setValue("permanentAddress", currentAddress, { shouldValidate: true });
+    }
+  }, [sameAsCurrent, currentAddress, setValue]);
+
   // Effect to generate preview URL for profile picture
   useEffect(() => {
-    if (profilePic instanceof File) {
+    if (profilePic && profilePic instanceof File) {
       const reader = new FileReader();
-
       reader.onloadend = () => {
         setPreview(reader.result);
       };
-
       reader.readAsDataURL(profilePic);
     } else {
       setPreview(null);
@@ -80,19 +88,36 @@ export function useEmployeeInformation() {
     name: "attachments",
   });
 
-  // Extract the keys from the data object
+  // Extract departments as an array
   const departmentKeys = Object.keys(values).filter((key) =>
     key.startsWith("department")
   );
 
-  // Get the SOP values dynamically
-  const departmentValues = departmentKeys.map((key) => values[key]);
+  const departments = departmentKeys
+    .filter((key) => values[key] === true) // Only include selected departments
+    .map((key) => {
+      const id = parseInt(key.replace("department", ""), 10);
+      return { id, label: areasOfExperties.find((d) => d.id === id)?.label };
+    });
 
-  // Check if any department is true
-  const hasValidDepartment = departmentValues.some((dep) => dep === true);
+  const hasValidDepartment = departments.length > 0;
 
   // Handle form submission
   const onSubmit = (data) => {
+    // Convert soft skills into an array of objects
+    const soft_skills = skillCategories.flatMap((category) =>
+      category.skills.map((skill) => ({
+        category_id: category.id,
+        skill_id: skill.value,
+        skill_name: skill.name,
+        rating: data.skills[skill.value] || null, // Rating from form data
+      }))
+    );
+    const documentsStatus = data.documents.map((doc) => ({
+      id: doc.id,
+      name: doc.label,
+      status: doc.status,
+    }));
     const jsonData = {
       personal_information: {
         profile_image: data.profilePic,
@@ -103,7 +128,7 @@ export function useEmployeeInformation() {
         nationality: data.nationality,
         national_id: data.nationalID,
         marital_status: data.maritalStatus,
-        current_address: data.permanentAddress,
+        current_address: data.currentAddress,
         permanent_address: data.sameAsCurrent
           ? data.currentAddress
           : data.permanentAddress,
@@ -129,15 +154,18 @@ export function useEmployeeInformation() {
       },
       educational_qualification: data.qualifications,
       work_experiences: data.workExperiences,
-      core_areas_of_expertise: data.department,
-      other_area: data.otherArea,
-      soft_skills: data.skillCategories,
-      additional_skills: data.additionalSkills,
+      skills_areas_expertise: {
+        core_areas: {
+          core_areas_of_expertise: departments,
+          other_area: data.otherArea,
+        },
+        soft_skills: { soft_skills, additional_skills: data.additionalSkills },
+      },
       research_background: {
         any_research_projects: data.anyResearchProjects,
         any_articles: data.anyArticles,
-        research_areas: data.researchAreas,
-        links: data.links,
+        research_areas: data.researchAreas || null,
+        links: data.links || null,
       },
       emergency_contact_details: {
         contact_name: data.contactName,
@@ -161,12 +189,14 @@ export function useEmployeeInformation() {
         any_medical_conditions: data.anyMedicalConditions,
       },
       file_uploads: {
-        documents_status: data.documents,
+        documents_status: documentsStatus,
         documents_uploaded: data.attachments,
       },
       employee_signature: data.signature,
     };
-    console.log("JSON format data", jsonData);
+    if (hasValidDepartment) {
+      console.log("Final JSON Data:", jsonData);
+    }
   };
 
   return {
@@ -188,5 +218,7 @@ export function useEmployeeInformation() {
     sameAsCurrent,
     currentAddress,
     hasValidDepartment,
+    anyResearchProjects,
+    anyArticles,
   };
 }
