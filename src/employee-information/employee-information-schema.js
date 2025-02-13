@@ -44,76 +44,79 @@ export const schema = Yup.object().shape({
     })
     .required("Field required"),
 
-  // jobTitle: Yup.string().required("Field Required"),
-  // departmentName: Yup.string().required("Field Required"),
-  // workOffice: Yup.string().required("Field Required"),
-  // employeeID: Yup.string().required("Field Required"),
-  // superVisorsName: Yup.string().required("Field Required"),
-  // supervisorsDesignation: Yup.string().required("Field Required"),
-  // dateOfJoining: Yup.object()
-  //   .shape({
-  //     startDate: Yup.date().required("Field required"),
-  //   })
-  //   .required("Field required"),
-  // contractExpiryDate: Yup.object()
-  //   .shape({
-  //     startDate: Yup.date().required("Field required"),
-  //   })
-  //   .required("Field required"),
-  // employeeType: Yup.object()
-  //   .shape({
-  //     value: Yup.string().required("Field Required"),
-  //   })
-  //   .required("Field required"),
-  // workCountry: Yup.object()
-  //   .shape({
-  //     value: Yup.string().required("Field Required"),
-  //   })
-  //   .required("Field required"),
+  // Employment Details
+  jobTitle: Yup.string().required("Field Required"),
+  departmentName: Yup.string().required("Field Required"),
+  workOffice: Yup.string().required("Field Required"),
+  employeeID: Yup.string().required("Field Required"),
+  superVisorsName: Yup.string().required("Field Required"),
+  supervisorsDesignation: Yup.string().required("Field Required"),
+  dateOfJoining: Yup.object()
+    .shape({
+      startDate: Yup.date().required("Field required"),
+    })
+    .required("Field required"),
+  contractExpiryDate: Yup.object()
+    .shape({
+      startDate: Yup.date().required("Field required"),
+    })
+    .required("Field required"),
+  employeeType: Yup.object()
+    .shape({
+      value: Yup.string().required("Field Required"),
+    })
+    .required("Field required"),
+  workCountry: Yup.object()
+    .shape({
+      value: Yup.string().required("Field Required"),
+    })
+    .required("Field required"),
 
-  // qualifications: Yup.array()
-  //   .of(
-  //     Yup.object().shape({
-  //       degree: Yup.object()
-  //         .shape({
-  //           value: Yup.string().required("Field required"),
-  //           label: Yup.string(),
-  //         })
-  //         .required("Field required"),
-  //       yearCompleted: Yup.object()
-  //         .shape({
-  //           value: Yup.number().required("Field required"),
-  //         })
-  //         .required("Field required"),
-  //       intituteName: Yup.string().required("Field required"),
-  //       country: Yup.object()
-  //         .shape({
-  //           value: Yup.string().required("Field required"),
-  //           label: Yup.string(),
-  //         })
-  //         .required("Field required"),
-  //     })
-  //   )
-  //   .required("Field Required"),
+  // Educational Qualifications
+  qualifications: Yup.array()
+    .of(
+      Yup.object().shape({
+        degree: Yup.object()
+          .shape({
+            value: Yup.string().required("Field required"),
+            label: Yup.string(),
+          })
+          .required("Field required"),
+        yearCompleted: Yup.object()
+          .shape({
+            value: Yup.number().required("Field required"),
+          })
+          .required("Field required"),
+        intituteName: Yup.string().required("Field required"),
+        country: Yup.object()
+          .shape({
+            value: Yup.string().required("Field required"),
+            label: Yup.string(),
+          })
+          .required("Field required"),
+      })
+    )
+    .required("Field Required"),
 
-  // workExperiences: Yup.array()
-  //   .of(
-  //     Yup.object().shape({
-  //       organization: Yup.string().required("Field required"),
+  // Work Experience
+  workExperiences: Yup.array()
+    .of(
+      Yup.object().shape({
+        organization: Yup.string().required("Field required"),
 
-  //       jobTitle: Yup.string().required("Field required"),
-  //       duration: Yup.object()
-  //         .shape({
-  //           startDate: Yup.date().required("Field required"),
-  //           endDate: Yup.date(),
-  //         })
-  //         .required("Field Required"),
-  //       responsibilities: Yup.string().required("Field required"),
-  //     })
-  //   )
-  //   .required("Field Required"),
+        jobTitle: Yup.string().required("Field required"),
+        duration: Yup.object()
+          .shape({
+            startDate: Yup.date().required("Field required"),
+            endDate: Yup.date(),
+          })
+          .required("Field Required"),
+        responsibilities: Yup.string().required("Field required"),
+      })
+    )
+    .required("Field Required"),
 
-  // Employment skills
+  // Skills, Expertise & Incubation Potential
   skills: Yup.object().shape(
     skillCategories.reduce((acc, category) => {
       category.skills.forEach((skill) => {
@@ -122,22 +125,18 @@ export const schema = Yup.object().shape({
       return acc;
     }, {})
   ),
-
   anyResearchProjects: Yup.string().required("Field Required"),
   anyArticles: Yup.string().required("Field Required"),
-
   researchAreas: Yup.string().when("anyResearchProjects", {
     is: "yes",
     then: (schema) => schema.required("Research area is required"),
     otherwise: (schema) => schema.notRequired(),
   }),
-
   links: Yup.string().when("anyArticles", {
     is: "yes",
     then: (schema) => schema.required("Links are required"),
     otherwise: (schema) => schema.notRequired(),
   }),
-
   departments: Yup.array()
     .min(1, "At least one department must be selected")
     .of(
@@ -147,26 +146,30 @@ export const schema = Yup.object().shape({
       })
     ),
 
-  // contactName: Yup.string().required("Field Required"),
-  // relationship: Yup.string().required("Field Required"),
-  // emergencyMobileNumber: Yup.string().required("Field Required"),
-  // alternateNumber: Yup.string().required("Field Required"),
-  // emailAddress: Yup.string()
-  //   .email("Invalid email format")
-  //   .required("Field Required"),
-  // emergencyPermanentAddress: Yup.string().required("Field Required"),
+  // Emergency Contact Details
+  contactName: Yup.string().required("Field Required"),
+  relationship: Yup.string().required("Field Required"),
+  emergencyMobileNumber: Yup.string().required("Field Required"),
+  alternateNumber: Yup.string().required("Field Required"),
+  emailAddress: Yup.string()
+    .email("Invalid email format")
+    .required("Field Required"),
+  emergencyPermanentAddress: Yup.string().required("Field Required"),
 
-  // bankName: Yup.string().required("Field Required"),
-  // branch: Yup.string().required("Field Required"),
-  // accountTitle: Yup.string().required("Field Required"),
-  // accountNumber: Yup.string().required("Field Required"),
-  // swifCode: Yup.string().required("Field Required"),
-  // bankAddress: Yup.string().required("Field Required"),
+  // Banking & Salary Information
+  bankName: Yup.string().required("Field Required"),
+  branch: Yup.string().required("Field Required"),
+  accountTitle: Yup.string().required("Field Required"),
+  accountNumber: Yup.string().required("Field Required"),
+  swifCode: Yup.string().required("Field Required"),
+  bankAddress: Yup.string().required("Field Required"),
 
-  // langaugeSpoken: Yup.string().required("Field Required"),
-  // specialSkills: Yup.string().required("Field Required"),
-  // anyMedicalConditions: Yup.string().required("Field Required"),
+  // Additional Information
+  langaugeSpoken: Yup.string().required("Field Required"),
+  specialSkills: Yup.string().required("Field Required"),
+  anyMedicalConditions: Yup.string().required("Field Required"),
 
+  // Documents Upload
   documents: Yup.array()
     .of(
       Yup.object().shape({
@@ -191,6 +194,8 @@ export const schema = Yup.object().shape({
       }),
     })
   ),
+
+  // Signature
   signature: Yup.string().required("Signature is required"),
 });
 
@@ -265,6 +270,7 @@ export const defaultValues = {
   specialSkills: "",
   anyMedicalConditions: "",
 
+  // Documents upload
   documents: documents.map((doc) => ({
     id: doc.id,
     label: doc.label,
