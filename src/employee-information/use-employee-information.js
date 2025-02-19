@@ -3,7 +3,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import { schema, defaultValues } from "./employee-information-schema";
 import { useEffect, useState } from "react";
-import { areasOfExperties, skillCategories } from "./data";
+import { areasOfExperties, skillCategories, documents } from "./data";
+import axios from "axios";
 
 export function useEmployeeInformation() {
   const [preview, setPreview] = useState(null);
@@ -103,7 +104,7 @@ export function useEmployeeInformation() {
   const hasValidDepartment = departments.length > 0;
 
   // Handle form submission
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // Convert soft skills into an array of objects
     const soft_skills = skillCategories.flatMap((category) =>
       category.skills.map((skill) => ({
@@ -113,11 +114,13 @@ export function useEmployeeInformation() {
         rating: data.skills[skill.value] || null, // Rating from form data
       }))
     );
+  
     const documentsStatus = data.documents.map((doc) => ({
       id: doc.id,
       name: doc.label,
       status: doc.status,
     }));
+  
     const jsonData = {
       personal_information: {
         profile_image: data.profilePic,
@@ -190,12 +193,51 @@ export function useEmployeeInformation() {
       },
       file_uploads: {
         documents_status: documentsStatus,
-        documents_uploaded: data.attachments,
+        documents_uploaded: data.attachments.map((attachment) => ({
+          fileName: attachment.fileUpload[0]?.name || "", // Ensure fileName is set
+          fileUpload: attachment.fileUpload,
+          documentType: documents.find(doc => doc.id === attachment.file)?.label // Set document type
+        })),
       },
       employee_signature: data.signature,
     };
+  
     if (hasValidDepartment) {
-      console.log("Final JSON Data:", jsonData);
+      try {
+        console.log("Submitting form data:", jsonData);
+        const formData = new FormData();
+        formData.append("data", JSON.stringify(jsonData));
+  
+        // Debugging: Check if attachments are correctly set
+        console.log("Attachments:", data.attachments);
+  
+        data.attachments.forEach((attachment, index) => {
+          if (attachment.fileUpload) { // Check if fileUpload exists
+            console.log(`Appending file${index}:`, attachment.fileUpload);
+           
+
+            formData.append(`file${index}`, attachment.fileUpload); // Directly append the file
+
+            attachment.fileName = attachment.fileUpload.name;
+          } else {
+            console.warn(`File at index ${index} is undefined or null`);
+          }
+        });
+  
+        const response = await axios.post(
+          "http://127.0.0.1:5000/employees",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+  
+        console.log("Response:", response.data);
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
     }
   };
 

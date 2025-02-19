@@ -186,15 +186,16 @@ export const schema = Yup.object().shape({
     .min(1, "At least one document must be selected"),
   attachments: Yup.array().of(
     Yup.object().shape({
-      file: Yup.mixed().nullable(), // File can be null
-      fileName: Yup.string().when("file", (file, schema) => {
-        return file
-          ? schema.required("File name is required")
-          : schema.notRequired();
-      }),
+      fileUpload: Yup.mixed().nullable(), // File can be null
+      file: Yup.object().shape({
+        value: Yup.number().required("Document type is required"),
+        label: Yup.string().required(),
+      }).required("File name is required"),
     })
-  ),
+  ).required("Attachments are required"),
 
+
+ 
   // Signature
   signature: Yup.string().required("Signature is required"),
 });

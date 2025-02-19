@@ -901,7 +901,7 @@ const EmployeeInformation = () => {
                   onClick={() => {
                     appendAttachments({
                       file: "",
-                      fileName: "",
+                      fileUpload: "",
                     });
                   }}
                 >
@@ -914,27 +914,32 @@ const EmployeeInformation = () => {
               {attachments.map((field, index) => {
                 return (
                   <div className="flex items-start gap-2 w-full">
-                    <div
-                      key={field.id}
-                      className="w-full bg-gray-50 flex items-center gap-3 p-3 border border-gray-300 rounded shadow-sm mb-4"
+                  <div
+                    key={field.id}
+                    className="w-full bg-gray-50 flex items-center gap-3 p-3 border border-gray-300 rounded shadow-sm mb-4"
+                  >
+                    <RHFSelect
+                    name={`attachments[${index}].file`}
+                    placeholder="Select Document Type"
+                    options={documents.map((doc) => ({
+                      label: doc.label,
+                      value: doc.id,
+                    }))}
+                    required
+                    />
+                    <RHFUploadFile
+                    name={`attachments[${index}].fileUpload`}
+                    accept="*"
+                    required
+                    />
+                    <button
+                    onClick={() => {
+                      removeAttachments(index);
+                    }}
                     >
-                      <RHFUploadFile
-                        name={`attachments[${index}.file]`}
-                        accept="image/*,.pdf,.xlsx,.xls,.doc,.docx"
-                      />
-                      <RHFInputField
-                        name={`attachments[${index}.fileName]`}
-                        placeholder="Enter File Name"
-                        required
-                      />
-                      <button
-                        onClick={() => {
-                          removeAttachments(index);
-                        }}
-                      >
-                        <IoCloseCircle size="24px" className="text-red-500" />
-                      </button>
-                    </div>
+                    <IoCloseCircle size="24px" className="text-red-500" />
+                    </button>
+                  </div>
                   </div>
                 );
               })}
