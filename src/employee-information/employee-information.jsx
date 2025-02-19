@@ -114,6 +114,40 @@ const EmployeeInformation = () => {
               </div>
               <div className="flex flex-row xs:flex-col gap-6">
                 <div className="w-full">
+                  <RHFInputField
+                    outerLabel="National ID"
+                    name="nationalID"
+                    placeholder="National ID"
+                    required
+                  />
+                </div>
+                <div className="w-full">
+                  <RHFDatePicker
+                    name="IDExpiryDate"
+                    placeholder="From ~ To"
+                    outerLabel="Expiry Date (National ID)"
+                    required
+                  />
+                </div>
+              </div>
+              <div className="flex flex-row xs:flex-col gap-6">
+                <div className="w-full">
+                  <RHFInputField
+                    outerLabel="Passport Number"
+                    name="passportNumber"
+                    placeholder="Passport Number"
+                  />
+                </div>
+                <div className="w-full">
+                  <RHFDatePicker
+                    name="passportExpiryDate"
+                    placeholder="From ~ To"
+                    outerLabel="Expiry Date (Passport)"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-row xs:flex-col gap-6">
+                <div className="w-full">
                   <RHFSelect
                     outerLabel="Nationality"
                     name="nationality"
@@ -126,17 +160,6 @@ const EmployeeInformation = () => {
                   />
                 </div>
                 <div className="w-full">
-                  <RHFInputField
-                    outerLabel="National ID / Passport Number"
-                    name="nationalID"
-                    placeholder="National ID / Passport Number"
-                    required
-                    type="number"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-row xs:flex-col gap-6">
-                <div className="w-full">
                   <RHFSelect
                     outerLabel="Marital Status"
                     name="maritalStatus"
@@ -144,7 +167,25 @@ const EmployeeInformation = () => {
                     options={[
                       { label: "Single ", value: "Single " },
                       { label: "Married ", value: "Married " },
-                      { label: "Other ", value: "Other " },
+                      {
+                        label: "Prefer not to say",
+                        value: "Prefer not to say",
+                      },
+                    ]}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-row xs:flex-col gap-6">
+                <div className="w-full">
+                  <RHFSelect
+                    outerLabel="Country of Issue"
+                    name="countryofIssue"
+                    placeholder="Country of Issue"
+                    options={[
+                      { label: "India", value: "India" },
+                      { label: "Pakistan", value: "Pakistan" },
                     ]}
                     required
                   />
@@ -174,28 +215,6 @@ const EmployeeInformation = () => {
                       Check if same as current address
                     </span>
                   </div>
-                </div>
-              </div>
-              <div className="flex flex-row xs:flex-col gap-6">
-                <div className="w-full">
-                  <RHFDatePicker
-                    name="IDExpiryDate"
-                    placeholder="From ~ To"
-                    outerLabel="Expiry Date (Passport/ID)"
-                    required
-                  />
-                </div>
-                <div className="w-full">
-                  <RHFSelect
-                    outerLabel="Country of Issue"
-                    name="countryofIssue"
-                    placeholder="Country of Issue"
-                    options={[
-                      { label: "India", value: "India" },
-                      { label: "Pakistan", value: "Pakistan" },
-                    ]}
-                    required
-                  />
                 </div>
               </div>
               <div className="flex flex-row xs:flex-col gap-6">
@@ -353,7 +372,7 @@ const EmployeeInformation = () => {
             title="Educational Qualifications"
             onClick={() => {
               appendQualification({
-                degree: null,
+                degree: "",
                 intituteName: "",
                 yearCompleted: null,
                 country: null,
@@ -384,13 +403,9 @@ const EmployeeInformation = () => {
                 <div className="flex items-center gap-4 mt-2" key={index}>
                   <div className="w-[100%] flex flex-grid grid-cols-3 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xs:gap-2">
                     <div className="w-full">
-                      <RHFSelect
+                      <RHFInputField
                         name={`qualifications[${index}].degree`}
-                        placeholder="Select Degree"
-                        options={[
-                          { value: "HSSC", label: "HSSC" },
-                          { value: "BS", label: "BS" },
-                        ]}
+                        placeholder="Enter Degree Name"
                         required
                       />
                     </div>
@@ -777,7 +792,6 @@ const EmployeeInformation = () => {
                 </div>
                 <div className="w-full">
                   <RHFInputField
-                    type="number"
                     outerLabel="IBAN / Account Number"
                     name="accountNumber"
                     placeholder="IBAN / Account Number"
@@ -914,32 +928,32 @@ const EmployeeInformation = () => {
               {attachments.map((field, index) => {
                 return (
                   <div className="flex items-start gap-2 w-full">
-                  <div
-                    key={field.id}
-                    className="w-full bg-gray-50 flex items-center gap-3 p-3 border border-gray-300 rounded shadow-sm mb-4"
-                  >
-                    <RHFSelect
-                    name={`attachments[${index}].file`}
-                    placeholder="Select Document Type"
-                    options={documents.map((doc) => ({
-                      label: doc.label,
-                      value: doc.id,
-                    }))}
-                    required
-                    />
-                    <RHFUploadFile
-                    name={`attachments[${index}].fileUpload`}
-                    accept="*"
-                    required
-                    />
-                    <button
-                    onClick={() => {
-                      removeAttachments(index);
-                    }}
+                    <div
+                      key={field.id}
+                      className="w-full bg-gray-50 flex items-center gap-3 p-3 border border-gray-300 rounded shadow-sm mb-4"
                     >
-                    <IoCloseCircle size="24px" className="text-red-500" />
-                    </button>
-                  </div>
+                      <RHFSelect
+                        name={`attachments[${index}].file`}
+                        placeholder="Select Document Type"
+                        options={documents.map((doc) => ({
+                          label: doc.label,
+                          value: doc.id,
+                        }))}
+                        required
+                      />
+                      <RHFUploadFile
+                        name={`attachments[${index}].fileUpload`}
+                        accept="*"
+                        required
+                      />
+                      <button
+                        onClick={() => {
+                          removeAttachments(index);
+                        }}
+                      >
+                        <IoCloseCircle size="24px" className="text-red-500" />
+                      </button>
+                    </div>
                   </div>
                 );
               })}

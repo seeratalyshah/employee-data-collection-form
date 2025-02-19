@@ -11,8 +11,8 @@ export function useEmployeeInformation() {
 
   // Initialize useForm with default values
   const methods = useForm({
-    resolver: yupResolver(schema),
-    defaultValues,
+    // resolver: yupResolver(schema),
+    // defaultValues,
   });
   const { handleSubmit, control, watch, setValue } = methods;
   const profilePic = watch("profilePic");
@@ -126,17 +126,19 @@ export function useEmployeeInformation() {
         profile_image: data.profilePic,
         full_name: data.fullName,
         prefered_name: data.preferedName,
-        date_Of_birth: data.dateOfBirth,
+        date_Of_birth: data.dateOfBirth.startDate,
         gender: data.gender,
         nationality: data.nationality,
         national_id: data.nationalID,
+        passport_number: data.passportNumber,
         marital_status: data.maritalStatus,
         current_address: data.currentAddress,
         permanent_address: data.sameAsCurrent
           ? data.currentAddress
           : data.permanentAddress,
         same_as_current: data.sameAsCurrent,
-        id_expiry_date: data.IDExpiryDate,
+        id_expiry_date: data.IDExpiryDate.startDate,
+        passport_expiry_date: data.passportExpiryDate.startDate,
         country_of_issue: data.countryofIssue,
         mobile_number: data.mobileNumber,
         whatsapp_number: data.whatsAppNumber,
@@ -201,6 +203,7 @@ export function useEmployeeInformation() {
       },
       employee_signature: data.signature,
     };
+    console.log("data", jsonData)
   
     if (hasValidDepartment) {
       try {
@@ -223,6 +226,8 @@ export function useEmployeeInformation() {
             console.warn(`File at index ${index} is undefined or null`);
           }
         });
+
+        formData.append("profile_image", data.profilePic);
   
         const response = await axios.post(
           "http://127.0.0.1:5000/employees",
@@ -238,6 +243,7 @@ export function useEmployeeInformation() {
       } catch (error) {
         console.error("Error submitting form:", error);
       }
+      
     }
   };
 

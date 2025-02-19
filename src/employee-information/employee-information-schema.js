@@ -76,12 +76,7 @@ export const schema = Yup.object().shape({
   qualifications: Yup.array()
     .of(
       Yup.object().shape({
-        degree: Yup.object()
-          .shape({
-            value: Yup.string().required("Field required"),
-            label: Yup.string(),
-          })
-          .required("Field required"),
+        degree: Yup.string().required("Field required"),
         yearCompleted: Yup.object()
           .shape({
             value: Yup.number().required("Field required"),
@@ -184,18 +179,20 @@ export const schema = Yup.object().shape({
       })
     )
     .min(1, "At least one document must be selected"),
-  attachments: Yup.array().of(
-    Yup.object().shape({
-      fileUpload: Yup.mixed().nullable(), // File can be null
-      file: Yup.object().shape({
-        value: Yup.number().required("Document type is required"),
-        label: Yup.string().required(),
-      }).required("File name is required"),
-    })
-  ).required("Attachments are required"),
+  attachments: Yup.array()
+    .of(
+      Yup.object().shape({
+        fileUpload: Yup.mixed().nullable(), // File can be null
+        file: Yup.object()
+          .shape({
+            value: Yup.number().required("Document type is required"),
+            label: Yup.string().required(),
+          })
+          .required("File name is required"),
+      })
+    )
+    .required("Attachments are required"),
 
-
- 
   // Signature
   signature: Yup.string().required("Signature is required"),
 });
