@@ -1,5 +1,10 @@
-.container{
-    width: 100%;
-    max-width: 90%;
-    margin-inline: auto;
+.container {
+  width: 100%;
+  max-width: 90%;
+  margin-inline: auto;
 }
+
+.react-datepicker-wrapper {
+  width: 100% !important; /* Ensures full width */
+}
+

@@ -8,6 +8,7 @@ import { RHFCheckBox } from "../common/rhf-checkbox";
 import { RHFRadioGroup } from "../common/rhf-grouped-radio";
 import { RHFUploadFile } from "../common/custom-upload-file";
 import { RhfSignaturePad } from "../common/rhf-signature-pad";
+import { RHFYearPicker } from "../common/rhf-year-picker";
 import { IoMdCloseCircle } from "react-icons/io";
 import {
   areasOfExperties,
@@ -327,7 +328,6 @@ const EmployeeInformation = () => {
                     name="employeeID"
                     placeholder="Employee ID"
                     required
-                    type="number"
                   />
                 </div>
                 <div className="w-full">
@@ -410,10 +410,15 @@ const EmployeeInformation = () => {
                       />
                     </div>
                     <div className="w-full">
-                      <RHFSelect
+                      {/* <RHFSelect
                         name={`qualifications[${index}].yearCompleted`}
                         placeholder="Select Year of Completion"
                         options={years}
+                      /> */}
+                      <RHFYearPicker
+                        name={`qualifications[${index}].yearCompleted`}
+                        placeholder="Select Year"
+                        required
                       />
                     </div>
                     <div className="w-full">
