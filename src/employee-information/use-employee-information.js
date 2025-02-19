@@ -11,8 +11,8 @@ export function useEmployeeInformation() {
 
   // Initialize useForm with default values
   const methods = useForm({
-    // resolver: yupResolver(schema),
-    // defaultValues,
+    resolver: yupResolver(schema),
+    defaultValues,
   });
   const { handleSubmit, control, watch, setValue } = methods;
   const profilePic = watch("profilePic");
@@ -126,7 +126,7 @@ export function useEmployeeInformation() {
         profile_image: data.profilePic,
         full_name: data.fullName,
         prefered_name: data.preferedName,
-        date_Of_birth: data.dateOfBirth.startDate,
+        date_Of_birth: data.dateOfBirth,
         gender: data.gender,
         nationality: data.nationality,
         national_id: data.nationalID,
@@ -137,8 +137,8 @@ export function useEmployeeInformation() {
           ? data.currentAddress
           : data.permanentAddress,
         same_as_current: data.sameAsCurrent,
-        id_expiry_date: data.IDExpiryDate.startDate,
-        passport_expiry_date: data.passportExpiryDate.startDate,
+        id_expiry_date: data.IDExpiryDate,
+        passport_expiry_date: data.passportExpiryDate,
         country_of_issue: data.countryofIssue,
         mobile_number: data.mobileNumber,
         whatsapp_number: data.whatsAppNumber,
@@ -196,9 +196,9 @@ export function useEmployeeInformation() {
       file_uploads: {
         documents_status: documentsStatus,
         documents_uploaded: data.attachments.map((attachment) => ({
-          fileName: attachment.fileUpload[0]?.name || "", // Ensure fileName is set
+          fileName: attachment.fileUpload.name || "", // Ensure fileName is set
           fileUpload: attachment.fileUpload,
-          documentType: documents.find(doc => doc.id === attachment.file)?.label // Set document type
+          documentType: attachment.file.label // Set document type
         })),
       },
       employee_signature: data.signature,
@@ -242,8 +242,7 @@ export function useEmployeeInformation() {
         console.log("Response:", response.data);
       } catch (error) {
         console.error("Error submitting form:", error);
-      }
-      
+      } 
     }
   };
 
