@@ -53,20 +53,18 @@ export const skillCategories = [
   {
     id: 4,
     category: "Financial & Business",
-    skills: [
-      { name: "Budgeting & Financial Modelling", value: "11" },
-    ],
+    skills: [{ name: "Budgeting & Financial Modelling", value: "11" }],
   },
 ];
 
 export const documents = [
-  {id: 1, label:"Updated CV"},
-  {id: 2, label: "Passport / National ID Copy"},
-  {id: 3, label: "DBS / Police Clearance Certificate"},
-  {id: 4, label: "Work Permit / Visa (if applicable)"},
-  {id: 5, label: "Education Certificates & Degrees"},
-  {id: 6, label: "Signed Employment Contract"},
-  {id: 7, label: "Professional Certifications (if any)"},
+  { id: 1, label: "Updated CV" },
+  { id: 2, label: "Passport / National ID Copy" },
+  { id: 3, label: "DBS / Police Clearance Certificate" },
+  { id: 4, label: "Work Permit / Visa (if applicable)" },
+  { id: 5, label: "Education Certificates & Degrees" },
+  { id: 6, label: "Signed Employment Contract" },
+  { id: 7, label: "Professional Certifications (if any)" },
 ];
 
 export const areasOfExperties = [
@@ -143,4 +141,46 @@ export const areasOfExperties = [
     label: "Mental Health & Psychosocial Support",
   },
 ];
+
+export const countries = [
+  { value: 1, label: "Afghanistan", code: "AF", status: "1" },
+  { value: 2, label: "Bangladesh", code: "BD", status: "1" },
+  { value: 3, label: "Gambia", code: "GM", status: "1" },
+  { value: 4, label: "Gaza Palestine", code: "GZ", status: "1" },
+  { value: 5, label: "Indonesia", code: "ID", status: "1" },
+  { value: 6, label: "Malawi", code: "MW", status: "1" },
+  { value: 7, label: "Mauritania", code: "MR", status: "1" },
+  { value: 8, label: "Albania", code: "AL", status: "1" },
+  { value: 9, label: "Niger", code: "NE", status: "1" },
+  { value: 10, label: "Pakistan", code: "PK", status: "1" },
+  { value: 11, label: "Senegal", code: "SN", status: "1" },
+  { value: 12, label: "Somalia", code: "SO", status: "1" },
+  { value: 13, label: "Sri Lanka", code: "LK", status: "1" },
+  { value: 14, label: "Sudan", code: "SD", status: "1" },
+  { value: 15, label: "Turkey/Syria", code: "TR", status: "1" },
+  { value: 16, label: "Yemen", code: "YE", status: "1" },
+  { value: 17, label: "Mali", code: "ML", status: "1" },
+  { value: 18, label: "Mexico", code: "MX", status: "1" },
+  { value: 19, label: "Haiti", code: "HT", status: "1" },
+  { value: 20, label: "United Kingdom", code: "GB", status: "1" },
+  { value: 21, label: "South Africa", code: "ZA", status: "0" },
+  { value: 22, label: "India", code: "IN", status: "1" },
+  { value: 23, label: "Nigeria", code: "NG", status: "1" },
+  { value: 24, label: "Tanzania", code: "TZ", status: "1" },
+  { value: 25, label: "Uganda", code: "UG", status: "1" },
+  { value: 26, label: "France", code: "FR", status: "0" },
+  { value: 27, label: "Canada", code: "CA", status: "0" },
+  { value: 28, label: "Morocco", code: "MA", status: "1" },
+  { value: 29, label: "Jerusalem", code: "IL", status: "1" },
+  { value: 30, label: "Lebanon", code: "LB", status: "1" },
+  { value: 31, label: "Syria", code: "SY", status: "1" },
+  { value: 32, label: "Rwanda", code: "RW", status: "1" },
+  { value: 33, label: "Kashmir India", code: "JK", status: "1" },
+  { value: 34, label: "Mirpur Pakistan", code: "AJK", status: "1" },
+];
+
+export const years = Array.from({ length: 25 }, (_, i) => {
+  const year = 2000 + i;
+  return { value: year, label: `${year}` };
+});
 

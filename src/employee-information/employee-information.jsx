@@ -11,9 +11,11 @@ import { RhfSignaturePad } from "../common/rhf-signature-pad";
 import { IoMdCloseCircle } from "react-icons/io";
 import {
   areasOfExperties,
+  countries,
   documents,
   radioOptions,
   skillCategories,
+  years,
 } from "./data";
 import { IoAddCircle, IoCloseCircle } from "react-icons/io5";
 import Card from "../common/custom-card";
@@ -152,10 +154,7 @@ const EmployeeInformation = () => {
                     outerLabel="Nationality"
                     name="nationality"
                     placeholder="Nationality"
-                    options={[
-                      { label: "India", value: "India" },
-                      { label: "Pakistan", value: "Pakistan" },
-                    ]}
+                    options={countries}
                     required
                   />
                 </div>
@@ -183,10 +182,7 @@ const EmployeeInformation = () => {
                     outerLabel="Country of Issue"
                     name="countryofIssue"
                     placeholder="Country of Issue"
-                    options={[
-                      { label: "India", value: "India" },
-                      { label: "Pakistan", value: "Pakistan" },
-                    ]}
+                    options={countries}
                     required
                   />
                 </div>
@@ -311,10 +307,7 @@ const EmployeeInformation = () => {
                     outerLabel="Work Country"
                     name="workCountry"
                     placeholder="Work Country"
-                    options={[
-                      { label: "Pakistan", value: "Pakistan" },
-                      { label: "India", value: "India" },
-                    ]}
+                    options={countries}
                     required
                   />
                 </div>
@@ -420,20 +413,14 @@ const EmployeeInformation = () => {
                       <RHFSelect
                         name={`qualifications[${index}].yearCompleted`}
                         placeholder="Select Year of Completion"
-                        options={[
-                          { value: "2022", label: "2022" },
-                          { value: "2023", label: "2023" },
-                        ]}
+                        options={years}
                       />
                     </div>
                     <div className="w-full">
                       <RHFSelect
                         name={`qualifications[${index}].country`}
                         placeholder="Select Country"
-                        options={[
-                          { value: "India", label: "India" },
-                          { value: "Pakistan", label: "Pakistan" },
-                        ]}
+                        options={countries}
                       />
                     </div>
                   </div>
