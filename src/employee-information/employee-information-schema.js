@@ -77,11 +77,7 @@ export const schema = Yup.object().shape({
     .of(
       Yup.object().shape({
         degree: Yup.string().required("Field required"),
-        yearCompleted: Yup.object()
-          .shape({
-            value: Yup.number().required("Field required"),
-          })
-          .required("Field required"),
+        yearCompleted: Yup.number().required("Field required"),
         intituteName: Yup.string().required("Field required"),
         country: Yup.object()
           .shape({
