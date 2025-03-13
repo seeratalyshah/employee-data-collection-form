@@ -16,7 +16,6 @@ import {
   documents,
   radioOptions,
   skillCategories,
-  years,
 } from "./data";
 import { IoAddCircle, IoCloseCircle } from "react-icons/io5";
 import Card from "../common/custom-card";
@@ -410,11 +409,6 @@ const EmployeeInformation = () => {
                       />
                     </div>
                     <div className="w-full">
-                      {/* <RHFSelect
-                        name={`qualifications[${index}].yearCompleted`}
-                        placeholder="Select Year of Completion"
-                        options={years}
-                      /> */}
                       <RHFYearPicker
                         name={`qualifications[${index}].yearCompleted`}
                         placeholder="Select Year"

@@ -3,7 +3,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import { schema, defaultValues } from "./employee-information-schema";
 import { useEffect, useState } from "react";
-import { areasOfExperties, skillCategories, documents } from "./data";
+import { areasOfExperties, skillCategories } from "./data";
+import toast from "react-hot-toast";
 import axios from "axios";
 
 export function useEmployeeInformation() {
@@ -205,45 +206,49 @@ export function useEmployeeInformation() {
     };
     console.log("data", jsonData)
   
-    if (hasValidDepartment) {
-      try {
-        console.log("Submitting form data:", jsonData);
-        const formData = new FormData();
-        formData.append("data", JSON.stringify(jsonData));
-  
-        // Debugging: Check if attachments are correctly set
-        console.log("Attachments:", data.attachments);
-  
-        data.attachments.forEach((attachment, index) => {
-          if (attachment.fileUpload) { // Check if fileUpload exists
-            console.log(`Appending file${index}:`, attachment.fileUpload);
-           
+    
 
-            formData.append(`file${index}`, attachment.fileUpload); // Directly append the file
+if (hasValidDepartment) {
+  try {
+    console.log("Submitting form data:", jsonData);
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(jsonData));
 
-            attachment.fileName = attachment.fileUpload.name;
-          } else {
-            console.warn(`File at index ${index} is undefined or null`);
-          }
-        });
+    // Debugging: Check if attachments are correctly set
+    console.log("Attachments:", data.attachments);
 
-        formData.append("profile_image", data.profilePic);
-  
-        const response = await axios.post(
-          "http://data-collection.strategytracker.net:8000/employees",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-  
-        console.log("Response:", response.data);
-      } catch (error) {
-        console.error("Error submitting form:", error);
-      } 
-    }
+    data.attachments.forEach((attachment, index) => {
+      if (attachment.fileUpload) { // Check if fileUpload exists
+        console.log(`Appending file${index}:`, attachment.fileUpload);
+
+        formData.append(`file${index}`, attachment.fileUpload); // Directly append the file
+
+        attachment.fileName = attachment.fileUpload.name;
+      } else {
+        console.warn(`File at index ${index} is undefined or null`);
+      }
+    });
+
+    formData.append("profile_image", data.profilePic);
+
+    const response = await axios.post(
+      "http://data-collection.strategytracker.net:8000/employees",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log("Response:", response.data);
+    toast.success("Form submitted successfully!");
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    toast.error("Failed to submit form. Please try again.");
+  }
+}
+
   };
 
   return {

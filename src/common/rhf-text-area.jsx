@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 export function RHFTextArea({
@@ -15,8 +15,6 @@ export function RHFTextArea({
   ...other
 }) {
   const { control } = useFormContext();
-
-  const [value, setValue] = useState("");
 
   return (
     <Controller
