@@ -230,7 +230,7 @@ export function useEmployeeInformation() {
         formData.append("profile_image", data.profilePic);
   
         const response = await axios.post(
-          "http://127.0.0.1:5000/employees",
+          "http://data-collection.strategytracker.net:8000/employees",
           formData,
           {
             headers: {
