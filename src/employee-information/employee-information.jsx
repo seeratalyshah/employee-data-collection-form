@@ -791,7 +791,6 @@ const EmployeeInformation = () => {
                     outerLabel="Swift Code (if applicable)"
                     name="swifCode"
                     placeholder="Swift Code (if applicable)"
-                    required
                   />
                 </div>
                 <div className="w-full">

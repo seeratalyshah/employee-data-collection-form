@@ -152,7 +152,7 @@ export const schema = Yup.object().shape({
   branch: Yup.string().required("Field Required"),
   accountTitle: Yup.string().required("Field Required"),
   accountNumber: Yup.string().required("Field Required"),
-  swifCode: Yup.string().required("Field Required"),
+  // swifCode: Yup.string().required("Field Required"),
   bankAddress: Yup.string().required("Field Required"),
 
   // Additional Information
