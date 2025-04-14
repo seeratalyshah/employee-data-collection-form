@@ -1,4 +1,5 @@
 import { animateScroll as scroller } from "react-scroll";
+import { useNavigate } from 'react-router-dom';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import { schema, defaultValues } from "./employee-information-schema";
@@ -10,6 +11,10 @@ import axios from "axios";
 export function useEmployeeInformation() {
   const [preview, setPreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitErrorMessage, setSubmitErrorMessage] = useState("");
+
+  const navigate = useNavigate();
+
 
   // Initialize useForm with default values
   const methods = useForm({
@@ -39,9 +44,11 @@ export function useEmployeeInformation() {
     const errorFields = Object.keys(errors);
     if (errorFields.length > 0) {
       const firstErrorField = errorFields[0];
+      setSubmitErrorMessage("Some required information is missing. Please check the form and make sure all fields with a * are filled in. Once everything is complete, you’ll be able to submit the form.");
       scrollToField(firstErrorField);
     }
   };
+  
 
   // Automatically update permanentAddress when sameAsCurrent is checked
   useEffect(() => {
@@ -107,6 +114,7 @@ export function useEmployeeInformation() {
 
   // Handle form submission
   const onSubmit = async (data) => {
+    setSubmitErrorMessage("");
     // Convert soft skills into an array of objects
     const soft_skills = skillCategories.flatMap((category) =>
       category.skills.map((skill) => ({
@@ -249,6 +257,7 @@ export function useEmployeeInformation() {
         toast.error("Failed to submit form. Please try again.");
       } finally {
         setIsSubmitting(false); // Stop loading
+        navigate('/thank-you');
       }
     }
   };
@@ -275,5 +284,6 @@ export function useEmployeeInformation() {
     anyResearchProjects,
     anyArticles,
     isSubmitting,
+    submitErrorMessage
   };
 }

@@ -184,7 +184,7 @@ export const schema = Yup.object().shape({
             value: Yup.number().required("Document type is required"),
             label: Yup.string().required(),
           })
-          .required("File name is required"),
+          .required("Document type is required"),
       })
     )
     .required("Attachments are required"),

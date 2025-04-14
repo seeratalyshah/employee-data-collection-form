@@ -21,7 +21,7 @@ import { IoAddCircle, IoCloseCircle } from "react-icons/io5";
 import Card from "../common/custom-card";
 import Header from "../common/header";
 import profilePic from "../images/profile-pic.webp";
-import { Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 
 const EmployeeInformation = () => {
   const {
@@ -45,6 +45,7 @@ const EmployeeInformation = () => {
     anyResearchProjects,
     anyArticles,
     isSubmitting,
+    submitErrorMessage,
   } = useEmployeeInformation();
 
   return (
@@ -57,6 +58,17 @@ const EmployeeInformation = () => {
         >
           <Card title="Personal Information">
             <div className="flex flex-col items-center gap-4 my-10">
+              {submitErrorMessage && (
+                <div className="flex items-start gap-3 p-4 bg-red-100 border-l-4 border-red-500 rounded-lg text-red-600 mb-10">
+                  <AlertCircle className="mt-1 w-5 h-5 text-red-600" />
+                  <div>
+                    <p className="font-semibold">
+                      Missing Required Information
+                    </p>
+                    {submitErrorMessage}
+                  </div>
+                </div>
+              )}
               {profilePic && (
                 <img
                   src={preview ? preview : profilePic}
@@ -901,7 +913,7 @@ const EmployeeInformation = () => {
                   type="button"
                   onClick={() => {
                     appendAttachments({
-                      file: "",
+                      file: null,
                       fileUpload: "",
                     });
                   }}
