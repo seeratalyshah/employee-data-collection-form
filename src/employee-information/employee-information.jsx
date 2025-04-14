@@ -21,6 +21,7 @@ import { IoAddCircle, IoCloseCircle } from "react-icons/io5";
 import Card from "../common/custom-card";
 import Header from "../common/header";
 import profilePic from "../images/profile-pic.webp";
+import { Loader2 } from "lucide-react";
 
 const EmployeeInformation = () => {
   const {
@@ -43,6 +44,7 @@ const EmployeeInformation = () => {
     hasValidDepartment,
     anyResearchProjects,
     anyArticles,
+    isSubmitting,
   } = useEmployeeInformation();
 
   return (
@@ -246,9 +248,9 @@ const EmployeeInformation = () => {
                 <div className="w-full">
                   <RHFInputField
                     type="email"
-                    outerLabel="Official Email (if applicable)"
+                    outerLabel="Official Email"
                     name="officialEmail"
-                    placeholder="Official Email (if applicable)"
+                    placeholder="Official Email"
                     required
                   />
                 </div>
@@ -334,7 +336,7 @@ const EmployeeInformation = () => {
                     asSingle={true}
                     name="contractExpiryDate"
                     placeholder="From ~ To"
-                    outerLabel="Contract Expiry Date (if applicable)"
+                    outerLabel="Contract Expiry Date"
                     required
                   />
                 </div>
@@ -961,9 +963,13 @@ const EmployeeInformation = () => {
           <div className="w-full flex justify-end mt-4">
             <button
               type="submit"
-              className={`px-4 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none font-medium`}
+              disabled={isSubmitting}
+              className={`px-4 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none font-medium flex items-center gap-2 ${
+                isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+              }`}
             >
-              Submit
+              {isSubmitting && <Loader2 className="animate-spin w-4 h-4" />}
+              {isSubmitting ? "Submitting..." : "Submit"}
             </button>
           </div>
         </FormProvider>

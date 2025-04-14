@@ -9,6 +9,7 @@ import axios from "axios";
 
 export function useEmployeeInformation() {
   const [preview, setPreview] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Initialize useForm with default values
   const methods = useForm({
@@ -207,6 +208,7 @@ export function useEmployeeInformation() {
     console.log("data", jsonData);
 
     if (hasValidDepartment) {
+      setIsSubmitting(true);
       try {
         console.log("Submitting form data:", jsonData);
         const formData = new FormData();
@@ -245,6 +247,8 @@ export function useEmployeeInformation() {
       } catch (error) {
         console.error("Error submitting form:", error);
         toast.error("Failed to submit form. Please try again.");
+      } finally {
+        setIsSubmitting(false); // Stop loading
       }
     }
   };
@@ -270,5 +274,6 @@ export function useEmployeeInformation() {
     hasValidDepartment,
     anyResearchProjects,
     anyArticles,
+    isSubmitting,
   };
 }
