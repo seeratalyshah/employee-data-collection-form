@@ -14,8 +14,9 @@ import EmergencyContact from "./steps/EmergencyContact";
 import BankingInfo from "./steps/BankingInfo";
 import AdditionalInfo from "./steps/AdditionalInfo";
 import Declaration from "./steps/Declaration";
-import Header from "../common/header";
 import { labels, stepFields } from "./data";
+import logo from "../images/logo.png";
+// import { useEffect } from "react";
 
 export default function EmployeeInformation() {
   const ei = useEmployeeInformation();
@@ -41,8 +42,19 @@ export default function EmployeeInformation() {
 
   return (
     <>
-      <Header />
-      <main className="container my-10 p-4 rounded-md mt-44">
+      {/* <Header /> */}
+      <div className="container p-4 rounded-md">
+        <div className="bg-blue-500 text-white p-8 flex flex-col items-center rounded-lg mb-10">
+          <div className="w-36 h-36 bg-white rounded-full flex items-center justify-center mb-4">
+            <img src={logo} alt="logo" className="w-28 h-28" />
+          </div>
+          <h1 className="text-2xl font-semibold mt-1">
+            Employee Data Collection Form
+          </h1>
+          <p className="text-center text-white/90">
+            For all Muslim Hands employees worldwide
+          </p>
+        </div>
         <FormProvider methods={ei.methods} onSubmit={submit}>
           <EIContext.Provider value={ei}>
             <Stepper
@@ -64,7 +76,7 @@ export default function EmployeeInformation() {
             />
           </EIContext.Provider>
         </FormProvider>
-      </main>
+      </div>
     </>
   );
 }

@@ -24,9 +24,9 @@ const Card = ({
 
   return (
     <div className="">
-      <div className="p-4 rounded-t-md bg-gray-100 shadow">
+      <div className="p-4 rounded-t-md bg-blue-100 shadow">
         <div className="flex justify-between items-start md:items-center flex-col md:flex-row ">
-          <h3 className="font-semibold text-md px-4">{title}</h3>
+          <h3 className="font-semibold text-md px-4 text-blue-600">{title}</h3>
           <div className="flex items-center">
             {view && (
               <div className="flex justify-start md:justify-end mr-3">
