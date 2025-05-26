@@ -100,6 +100,42 @@ export function useEmployeeInformation() {
     name: "attachments",
   });
 
+  const {
+    fields: personalAttachments,
+    append: appendPersonalAttachments,
+    remove: removePersonalAttachments,
+  } = useFieldArray({
+    control,
+    name: "personalAttachments",
+  });
+
+  const {
+    fields: employmentAttachments,
+    append: appendEmploymentAttachments,
+    remove: removeEmploymentAttachments,
+  } = useFieldArray({
+    control,
+    name: "employmentAttachments",
+  });
+
+  const {
+    fields: educationalAttachments,
+    append: appendEducationalAttachments,
+    remove: removeEducationalAttachments,
+  } = useFieldArray({
+    control,
+    name: "educationalAttachments",
+  });
+
+  const {
+    fields: experienceAttachments,
+    append: appendExperienceAttachments,
+    remove: removeExperienceAttachments,
+  } = useFieldArray({
+    control,
+    name: "experienceAttachments",
+  });
+
   // Extract departments as an array
   const departmentKeys = Object.keys(values).filter((key) =>
     key.startsWith("department")
@@ -127,11 +163,21 @@ export function useEmployeeInformation() {
       }))
     );
 
-    const documentsStatus = data.documents.map((doc) => ({
-      id: doc.id,
-      name: doc.label,
-      status: doc.status,
-    }));
+    /* ---------- collect every upload's meta --------------- */
+    const addMeta = (list, section) =>
+      list.map((a, idx) => ({
+        section, // tells the API which group it belongs to
+        index: idx, // matches the field name we’ll append in FormData
+        fileName: a.fileUpload.name,
+        documentType: a.file.label,
+      }));
+
+    const allUploadsMeta = [
+      ...addMeta(data.personalAttachments, "personal"),
+      ...addMeta(data.employmentAttachments, "employment"),
+      ...addMeta(data.educationalAttachments, "education"),
+      ...addMeta(data.experienceAttachments, "experience"),
+    ];
 
     const jsonData = {
       personal_information: {
@@ -206,61 +252,56 @@ export function useEmployeeInformation() {
         any_medical_conditions: data.anyMedicalConditions,
       },
       file_uploads: {
-        documents_status: documentsStatus,
-        documents_uploaded: data.attachments.map((attachment) => ({
-          fileName: attachment.fileUpload.name || "", // Ensure fileName is set
-          fileUpload: attachment.fileUpload,
-          documentType: attachment.file.label, // Set document type
-        })),
+        documents_status: [],
+        documents_uploaded: allUploadsMeta,
       },
       employee_signature: data.signature,
     };
     console.log("data", jsonData);
 
-    if (hasValidDepartment) {
-      setIsSubmitting(true);
-      try {
-        console.log("Submitting form data:", jsonData);
-        const formData = new FormData();
-        formData.append("data", JSON.stringify(jsonData));
+    setIsSubmitting(true);
+    try {
+      console.log("Submitting form data:", jsonData);
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(jsonData));
 
-        // Debugging: Check if attachments are correctly set
-        console.log("Attachments:", data.attachments);
+      // Debugging: Check if attachments are correctly set
+      console.log("Attachments:", data.attachments);
 
-        data.attachments.forEach((attachment, index) => {
-          if (attachment.fileUpload) {
-            // Check if fileUpload exists
-            console.log(`Appending file${index}:`, attachment.fileUpload);
+      formData.append("data", JSON.stringify(jsonData));
+      if (data.profilePic) formData.append("profile_image", data.profilePic);
 
-            formData.append(`file${index}`, attachment.fileUpload); // Directly append the file
-
-            attachment.fileName = attachment.fileUpload.name;
-          } else {
-            console.warn(`File at index ${index} is undefined or null`);
-          }
-        });
-
-        formData.append("profile_image", data.profilePic);
-
-        const response = await axios.post(
-          "https://data-collection.strategytracker.net/employees",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
+      const appendGroup = (list, prefix) =>
+        list.forEach(
+          (a, i) =>
+            a.fileUpload && formData.append(`${prefix}_${i}`, a.fileUpload)
         );
 
-        console.log("Response:", response.data);
-        toast.success("Form submitted successfully!");
-      } catch (error) {
-        console.error("Error submitting form:", error);
-        toast.error("Failed to submit form. Please try again.");
-      } finally {
-        setIsSubmitting(false); // Stop loading
-        navigate("/thank-you");
-      }
+      appendGroup(data.personalAttachments, "personal");
+      appendGroup(data.employmentAttachments, "employment");
+      appendGroup(data.educationalAttachments, "education");
+      appendGroup(data.experienceAttachments, "experience");
+
+      // formData.append("profile_image", data.profilePic);
+
+      const response = await axios.post(
+        "https://data-collection.strategytracker.net/employees",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Response:", response.data);
+      toast.success("Form submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Failed to submit form. Please try again.");
+    } finally {
+      setIsSubmitting(false); // Stop loading
+      navigate("/thank-you");
     }
   };
 
@@ -278,7 +319,7 @@ export function useEmployeeInformation() {
     attachments,
     appendAttachments,
     removeAttachments,
-    preview, // Return the preview URL to be used in the component
+    preview,
     fullName,
     sameAsCurrent,
     currentAddress,
@@ -288,5 +329,17 @@ export function useEmployeeInformation() {
     isSubmitting,
     submitErrorMessage,
     setSubmitErrorMessage,
+    personalAttachments,
+    appendPersonalAttachments,
+    removePersonalAttachments,
+    employmentAttachments,
+    appendEmploymentAttachments,
+    removeEmploymentAttachments,
+    educationalAttachments,
+    appendEducationalAttachments,
+    removeEducationalAttachments,
+    experienceAttachments,
+    appendExperienceAttachments,
+    removeExperienceAttachments,
   };
 }

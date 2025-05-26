@@ -1,5 +1,4 @@
 "use client";
-// import { useEffect } from "react";
 import { useEmployeeInformation } from "./use-employee-information";
 import { FormProvider } from "../common/form-provider";
 import { EIContext } from "./EIContext";
@@ -14,7 +13,6 @@ import SkillsResearch from "./steps/SkillsResearch";
 import EmergencyContact from "./steps/EmergencyContact";
 import BankingInfo from "./steps/BankingInfo";
 import AdditionalInfo from "./steps/AdditionalInfo";
-import DocumentsUpload from "./steps/DocumentsUpload";
 import Declaration from "./steps/Declaration";
 import Header from "../common/header";
 import { labels, stepFields } from "./data";
@@ -61,8 +59,7 @@ export default function EmployeeInformation() {
                 <EmergencyContact key={6} />,
                 <BankingInfo key={7} />,
                 <AdditionalInfo key={8} />,
-                <DocumentsUpload key={9} />,
-                <Declaration key={10} />,
+                <Declaration key={9} />,
               ]}
             />
           </EIContext.Provider>

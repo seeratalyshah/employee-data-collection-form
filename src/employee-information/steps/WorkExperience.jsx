@@ -4,6 +4,10 @@ import { RHFDatePicker } from "../../common/rhf-date-picker";
 import { RHFInputField } from "../../common/rhf-input";
 import { useEI } from "../EIContext";
 import { IoMdCloseCircle } from "react-icons/io";
+import { IoAddCircle, IoCloseCircle } from "react-icons/io5";
+import { RHFSelect } from "../../common/rhf-multi-select";
+import { experienceDocuments } from "../data";
+import { RHFUploadFile } from "../../common/custom-upload-file";
 
 export default function WorkExperience({ onNext, onPrev }) {
   const {
@@ -11,6 +15,9 @@ export default function WorkExperience({ onNext, onPrev }) {
     appendWorkExperience,
     removeWorkExperience,
     submitErrorMessage,
+    experienceAttachments,
+    appendExperienceAttachments,
+    removeExperienceAttachments,
   } = useEI();
 
   return (
@@ -100,6 +107,63 @@ export default function WorkExperience({ onNext, onPrev }) {
           </div>
         </>
       ))}
+      <div className="flex flex-col mb-2 text-white mt-3">
+        <div className="flex items-center mb-2">
+          <span className="text-gray-700 mr-4 font-medium text-lg">
+            Attachments
+          </span>
+          <div className="border-b border-gray-300 flex-grow"></div>
+        </div>
+        <div className="flex items-center mt-3">
+          <button
+            className="bg-blue-500 px-4 py-2.5 rounded text-sm flex items-center gap-3"
+            type="button"
+            onClick={() => {
+              appendExperienceAttachments({
+                file: null,
+                fileUpload: "",
+              });
+            }}
+          >
+            <IoAddCircle className="text-white" size="22px" />
+            Add Single or Multiple Files
+          </button>
+        </div>
+      </div>
+      <div className="w-full">
+        {experienceAttachments.map((field, index) => {
+          return (
+            <div className="flex items-start gap-2 w-full">
+              <div
+                key={field.id}
+                className="w-full bg-gray-50 flex items-center gap-3 p-3 border border-gray-300 rounded shadow-sm mb-4"
+              >
+                <RHFSelect
+                  name={`experienceAttachments[${index}].file`}
+                  placeholder="Select Document Type"
+                  options={experienceDocuments.map((doc) => ({
+                    label: doc.label,
+                    value: doc.id,
+                  }))}
+                  required
+                />
+                <RHFUploadFile
+                  name={`experienceAttachments[${index}].fileUpload`}
+                  accept="*"
+                  required
+                />
+                <button
+                  onClick={() => {
+                    removeExperienceAttachments(index);
+                  }}
+                >
+                  <IoCloseCircle size="24px" className="text-red-500" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
       <div className="ei-nav">
         <button
           type="button"

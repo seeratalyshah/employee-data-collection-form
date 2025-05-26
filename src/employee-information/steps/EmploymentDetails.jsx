@@ -2,12 +2,19 @@ import Card from "../../common/custom-card";
 import { RHFInputField } from "../../common/rhf-input";
 import { RHFDatePicker } from "../../common/rhf-date-picker";
 import { RHFSelect } from "../../common/rhf-multi-select";
-import { countries } from "../data";
+import { countries, employmentDocuments } from "../data";
 import { useEI } from "../EIContext";
 import { AlertCircle } from "lucide-react";
+import { IoAddCircle, IoCloseCircle } from "react-icons/io5";
+import { RHFUploadFile } from "../../common/custom-upload-file";
 
 export default function EmploymentDetails({ onNext, onPrev }) {
-  const { submitErrorMessage } = useEI();
+  const {
+    submitErrorMessage,
+    employmentAttachments,
+    appendEmploymentAttachments,
+    removeEmploymentAttachments,
+  } = useEI();
   return (
     <Card title="Employment Details">
       {submitErrorMessage && (
@@ -119,6 +126,63 @@ export default function EmploymentDetails({ onNext, onPrev }) {
             />
           </div>
         </div>
+      </div>
+      <div className="flex flex-col mb-2 text-white mt-3">
+        <div className="flex items-center mb-2">
+          <span className="text-gray-700 mr-4 font-medium text-lg">
+            Attachments
+          </span>
+          <div className="border-b border-gray-300 flex-grow"></div>
+        </div>
+        <div className="flex items-center mt-3">
+          <button
+            className="bg-blue-500 px-4 py-2.5 rounded text-sm flex items-center gap-3"
+            type="button"
+            onClick={() => {
+              appendEmploymentAttachments({
+                file: null,
+                fileUpload: "",
+              });
+            }}
+          >
+            <IoAddCircle className="text-white" size="22px" />
+            Add Single or Multiple Files
+          </button>
+        </div>
+      </div>
+      <div className="w-full">
+        {employmentAttachments.map((field, index) => {
+          return (
+            <div className="flex items-start gap-2 w-full">
+              <div
+                key={field.id}
+                className="w-full bg-gray-50 flex items-center gap-3 p-3 border border-gray-300 rounded shadow-sm mb-4"
+              >
+                <RHFSelect
+                  name={`employmentAttachments[${index}].file`}
+                  placeholder="Select Document Type"
+                  options={employmentDocuments.map((doc) => ({
+                    label: doc.label,
+                    value: doc.id,
+                  }))}
+                  required
+                />
+                <RHFUploadFile
+                  name={`employmentAttachments[${index}].fileUpload`}
+                  accept="*"
+                  required
+                />
+                <button
+                  onClick={() => {
+                    removeEmploymentAttachments(index);
+                  }}
+                >
+                  <IoCloseCircle size="24px" className="text-red-500" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
       <div className="ei-nav">
         <button

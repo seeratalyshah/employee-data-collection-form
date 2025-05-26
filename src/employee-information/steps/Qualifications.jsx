@@ -2,10 +2,12 @@ import Card from "../../common/custom-card";
 import { RHFInputField } from "../../common/rhf-input";
 import { RHFSelect } from "../../common/rhf-multi-select";
 import { RHFYearPicker } from "../../common/rhf-year-picker";
-import { countries } from "../data";
+import { countries, educationalDocuments } from "../data";
 import { useEI } from "../EIContext";
 import { IoMdCloseCircle } from "react-icons/io";
 import { AlertCircle } from "lucide-react";
+import { IoAddCircle, IoCloseCircle } from "react-icons/io5";
+import { RHFUploadFile } from "../../common/custom-upload-file";
 
 export default function Qualifications({ onNext, onPrev, isLast }) {
   const {
@@ -13,6 +15,9 @@ export default function Qualifications({ onNext, onPrev, isLast }) {
     appendQualification,
     removeQualification,
     submitErrorMessage,
+    educationalAttachments,
+    appendEducationalAttachments,
+    removeEducationalAttachments,
   } = useEI();
 
   return (
@@ -109,6 +114,64 @@ export default function Qualifications({ onNext, onPrev, isLast }) {
           </div>
         </>
       ))}
+
+      <div className="flex flex-col mb-2 text-white mt-3">
+        <div className="flex items-center mb-2">
+          <span className="text-gray-700 mr-4 font-medium text-lg">
+            Attachments
+          </span>
+          <div className="border-b border-gray-300 flex-grow"></div>
+        </div>
+        <div className="flex items-center mt-3">
+          <button
+            className="bg-blue-500 px-4 py-2.5 rounded text-sm flex items-center gap-3"
+            type="button"
+            onClick={() => {
+              appendEducationalAttachments({
+                file: null,
+                fileUpload: "",
+              });
+            }}
+          >
+            <IoAddCircle className="text-white" size="22px" />
+            Add Single or Multiple Files
+          </button>
+        </div>
+      </div>
+      <div className="w-full">
+        {educationalAttachments.map((field, index) => {
+          return (
+            <div className="flex items-start gap-2 w-full">
+              <div
+                key={field.id}
+                className="w-full bg-gray-50 flex items-center gap-3 p-3 border border-gray-300 rounded shadow-sm mb-4"
+              >
+                <RHFSelect
+                  name={`educationalAttachments[${index}].file`}
+                  placeholder="Select Document Type"
+                  options={educationalDocuments.map((doc) => ({
+                    label: doc.label,
+                    value: doc.id,
+                  }))}
+                  required
+                />
+                <RHFUploadFile
+                  name={`educationalAttachments[${index}].fileUpload`}
+                  accept="*"
+                  required
+                />
+                <button
+                  onClick={() => {
+                    removeEducationalAttachments(index);
+                  }}
+                >
+                  <IoCloseCircle size="24px" className="text-red-500" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
       <div className="ei-nav">
         <button

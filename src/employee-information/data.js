@@ -57,14 +57,23 @@ export const skillCategories = [
   },
 ];
 
-export const documents = [
+export const personalInfoDocuments = [
+  { id: 1, label: "Passport / National ID Copy" },
+  { id: 2, label: "DBS / Police Clearance Certificate" },
+];
+
+export const employmentDocuments = [
+  { id: 1, label: "Work Permit / Visa (if applicable)" },
+  { id: 2, label: "Signed Employment Contract" },
+];
+
+export const educationalDocuments = [
+  { id: 1, label: "Education Certificates & Degrees" },
+];
+
+export const experienceDocuments = [
   { id: 1, label: "Updated CV" },
-  { id: 2, label: "Passport / National ID Copy" },
-  { id: 3, label: "DBS / Police Clearance Certificate" },
-  { id: 4, label: "Work Permit / Visa (if applicable)" },
-  { id: 5, label: "Education Certificates & Degrees" },
-  { id: 6, label: "Signed Employment Contract" },
-  { id: 7, label: "Professional Certifications (if any)" },
+  { id: 2, label: "Professional Certifications (if any)" },
 ];
 
 export const areasOfExperties = [
@@ -185,7 +194,7 @@ export const years = Array.from({ length: 25 }, (_, i) => {
 });
 
 export const stepFields = [
-    [
+  [
     "profilePic",
     "fullName",
     "preferedName",
@@ -204,8 +213,9 @@ export const stepFields = [
     "whatsAppNumber",
     "personalEmail",
     "officialEmail",
-    ],
-    [
+    "personalAttachments",
+  ],
+  [
     "jobTitle",
     "departmentName",
     "dateOfJoining",
@@ -216,26 +226,32 @@ export const stepFields = [
     "contractExpiryDate",
     "superVisorsName",
     "supervisorsDesignation",
-    ],
-    ["qualifications"],
-    ["workExperiences"],
-    ["skills", "anyResearchProjects", "anyArticles", "researchAreas", "links"],
-    ["contactName", "relationship", "emergencyMobileNumber", "alternateNumber", "emailAddress", "emergencyPermanentAddress"],
-    ["bankName", "branch", "accountTitle", "accountNumber", "bankAddress"],
-    ["langaugeSpoken", "specialSkills", "anyMedicalConditions"],
-    ["documents", "attachments"],
-    ["signature"],
-  ];
+    "employmentAttachments",
+  ],
+  ["qualifications", "educationalAttachments"],
+  ["workExperiences", "experienceAttachments"],
+  ["skills", "anyResearchProjects", "anyArticles", "researchAreas", "links"],
+  [
+    "contactName",
+    "relationship",
+    "emergencyMobileNumber",
+    "alternateNumber",
+    "emailAddress",
+    "emergencyPermanentAddress",
+  ],
+  ["bankName", "branch", "accountTitle", "accountNumber", "bankAddress"],
+  ["langaugeSpoken", "specialSkills", "anyMedicalConditions"],
+  ["signature"],
+];
 
-  export const labels = [
-    "Personal",
-    "Employment",
-    "Qualifications",
-    "Experience",
-    "Skills",
-    "Emergency",
-    "Banking",
-    "Additional",
-    "Documents",
-    "Declaration",
-  ];
+export const labels = [
+  "Personal",
+  "Employment",
+  "Qualifications",
+  "Experience",
+  "Skills",
+  "Emergency",
+  "Banking",
+  "Additional",
+  "Declaration",
+];

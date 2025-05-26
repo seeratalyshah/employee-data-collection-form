@@ -5,13 +5,21 @@ import { RHFDatePicker } from "../../common/rhf-date-picker";
 import { RHFSelect } from "../../common/rhf-multi-select";
 import { RHFTextArea } from "../../common/rhf-text-area";
 import { RHFCheckBox } from "../../common/rhf-checkbox";
-import { countries } from "../data";
+import { countries, personalInfoDocuments } from "../data";
 import { useEI } from "../EIContext";
 import { AlertCircle } from "lucide-react";
 import profilePic from "../../images/profile-pic.webp";
+import { IoAddCircle, IoCloseCircle } from "react-icons/io5";
 
 export default function PersonalInfo({ onNext, onPrev, isFirst, isLast }) {
-  const { preview, sameAsCurrent, submitErrorMessage } = useEI();
+  const {
+    preview,
+    sameAsCurrent,
+    submitErrorMessage,
+    personalAttachments,
+    appendPersonalAttachments,
+    removePersonalAttachments,
+  } = useEI();
 
   return (
     <Card title="Personal Information">
@@ -223,6 +231,63 @@ export default function PersonalInfo({ onNext, onPrev, isFirst, isLast }) {
             />
           </div>
         </div>
+      </div>
+      <div className="flex flex-col mb-2 text-white mt-3">
+        <div className="flex items-center mb-2">
+          <span className="text-gray-700 mr-4 font-medium text-lg">
+            Attachments
+          </span>
+          <div className="border-b border-gray-300 flex-grow"></div>
+        </div>
+        <div className="flex items-center mt-3">
+          <button
+            className="bg-blue-500 px-4 py-2.5 rounded text-sm flex items-center gap-3"
+            type="button"
+            onClick={() => {
+              appendPersonalAttachments({
+                file: null,
+                fileUpload: "",
+              });
+            }}
+          >
+            <IoAddCircle className="text-white" size="22px" />
+            Add Single or Multiple Files
+          </button>
+        </div>
+      </div>
+      <div className="w-full">
+        {personalAttachments.map((field, index) => {
+          return (
+            <div className="flex items-start gap-2 w-full">
+              <div
+                key={field.id}
+                className="w-full bg-gray-50 flex items-center gap-3 p-3 border border-gray-300 rounded shadow-sm mb-4"
+              >
+                <RHFSelect
+                  name={`personalAttachments[${index}].file`}
+                  placeholder="Select Document Type"
+                  options={personalInfoDocuments.map((doc) => ({
+                    label: doc.label,
+                    value: doc.id,
+                  }))}
+                  required
+                />
+                <RHFUploadFile
+                  name={`personalAttachments[${index}].fileUpload`}
+                  accept="*"
+                  required
+                />
+                <button
+                  onClick={() => {
+                    removePersonalAttachments(index);
+                  }}
+                >
+                  <IoCloseCircle size="24px" className="text-red-500" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
       <div className="ei-nav">
         {!isFirst && (

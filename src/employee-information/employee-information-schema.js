@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { documents, skillCategories } from "./data";
+import { skillCategories } from "./data";
 
 export const schema = Yup.object().shape({
   // Personal Information
@@ -12,11 +12,11 @@ export const schema = Yup.object().shape({
   mobileNumber: Yup.string().required("Field Required"),
   whatsAppNumber: Yup.string().required("Field Required"),
   personalEmail: Yup.string()
-  .email("Invalid e-mail format")
-  .required("Field Required"),
-  officialEmail:  Yup.string()
-  .email("Invalid e-mail format")
-  .required("Field Required"),
+    .email("Invalid e-mail format")
+    .required("Field Required"),
+  officialEmail: Yup.string()
+    .email("Invalid e-mail format")
+    .required("Field Required"),
   IDExpiryDate: Yup.object()
     .shape({
       startDate: Yup.date().required("Field required"),
@@ -47,6 +47,19 @@ export const schema = Yup.object().shape({
       value: Yup.string().required("Field Required"),
     })
     .required("Field required"),
+  personalAttachments: Yup.array()
+    .of(
+      Yup.object().shape({
+        fileUpload: Yup.mixed().nullable(), // File can be null
+        file: Yup.object()
+          .shape({
+            value: Yup.number().required("Document type is required"),
+            label: Yup.string().required(),
+          })
+          .required("Document type is required"),
+      })
+    )
+    .required("Attachments are required"),
 
   // Employment Details
   jobTitle: Yup.string().required("Field Required"),
@@ -75,6 +88,19 @@ export const schema = Yup.object().shape({
       value: Yup.string().required("Field Required"),
     })
     .required("Field required"),
+  employmentAttachments: Yup.array()
+    .of(
+      Yup.object().shape({
+        fileUpload: Yup.mixed().nullable(), // File can be null
+        file: Yup.object()
+          .shape({
+            value: Yup.number().required("Document type is required"),
+            label: Yup.string().required(),
+          })
+          .required("Document type is required"),
+      })
+    )
+    .required("Attachments are required"),
 
   // Educational Qualifications
   qualifications: Yup.array()
@@ -92,6 +118,19 @@ export const schema = Yup.object().shape({
       })
     )
     .required("Field Required"),
+  educationalAttachments: Yup.array()
+    .of(
+      Yup.object().shape({
+        fileUpload: Yup.mixed().nullable(), // File can be null
+        file: Yup.object()
+          .shape({
+            value: Yup.number().required("Document type is required"),
+            label: Yup.string().required(),
+          })
+          .required("Document type is required"),
+      })
+    )
+    .required("Attachments are required"),
 
   // Work Experience
   workExperiences: Yup.array()
@@ -110,6 +149,19 @@ export const schema = Yup.object().shape({
       })
     )
     .required("Field Required"),
+  experienceAttachments: Yup.array()
+    .of(
+      Yup.object().shape({
+        fileUpload: Yup.mixed().nullable(), // File can be null
+        file: Yup.object()
+          .shape({
+            value: Yup.number().required("Document type is required"),
+            label: Yup.string().required(),
+          })
+          .required("Document type is required"),
+      })
+    )
+    .required("Attachments are required"),
 
   // Skills, Expertise & Incubation Potential
   skills: Yup.object().shape(
@@ -163,35 +215,6 @@ export const schema = Yup.object().shape({
   langaugeSpoken: Yup.string().required("Field Required"),
   specialSkills: Yup.string().required("Field Required"),
   anyMedicalConditions: Yup.string().required("Field Required"),
-
-  // Documents Upload
-  documents: Yup.array()
-    .of(
-      Yup.object().shape({
-        id: Yup.number().required(),
-        label: Yup.string().required(),
-        status: Yup.string()
-          .oneOf(
-            ["uploaded", "pending"],
-            "Status must be 'uploaded' or 'pending'"
-          )
-          .required("Upload status is required"),
-      })
-    )
-    .min(1, "At least one document must be selected"),
-  attachments: Yup.array()
-    .of(
-      Yup.object().shape({
-        fileUpload: Yup.mixed().nullable(), // File can be null
-        file: Yup.object()
-          .shape({
-            value: Yup.number().required("Document type is required"),
-            label: Yup.string().required(),
-          })
-          .required("Document type is required"),
-      })
-    )
-    .required("Attachments are required"),
 
   // Signature
   signature: Yup.string().required("Signature is required"),
@@ -267,11 +290,4 @@ export const defaultValues = {
   langaugeSpoken: "",
   specialSkills: "",
   anyMedicalConditions: "",
-
-  // Documents upload
-  documents: documents.map((doc) => ({
-    id: doc.id,
-    label: doc.label,
-    status: "", // Empty initially, will be filled by radio buttons
-  })),
 };
