@@ -11,8 +11,12 @@ export const schema = Yup.object().shape({
   permanentAddress: Yup.string().required("Field Required"),
   mobileNumber: Yup.string().required("Field Required"),
   whatsAppNumber: Yup.string().required("Field Required"),
-  personalEmail: Yup.string().required("Field Required"),
-  officialEmail: Yup.string().required("Field Required"),
+  personalEmail: Yup.string()
+  .email("Invalid e-mail format")
+  .required("Field Required"),
+  officialEmail:  Yup.string()
+  .email("Invalid e-mail format")
+  .required("Field Required"),
   IDExpiryDate: Yup.object()
     .shape({
       startDate: Yup.date().required("Field required"),

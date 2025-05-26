@@ -23,7 +23,7 @@ import Header from "../common/header";
 import profilePic from "../images/profile-pic.webp";
 import { AlertCircle, Loader2 } from "lucide-react";
 
-const EmployeeInformation = () => {
+const OldEmployeeInformation = () => {
   const {
     handleSubmit,
     onSubmit,
@@ -990,4 +990,4 @@ const EmployeeInformation = () => {
   );
 };
 
-export default EmployeeInformation;
+export default OldEmployeeInformation;

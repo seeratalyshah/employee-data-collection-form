@@ -184,3 +184,58 @@ export const years = Array.from({ length: 25 }, (_, i) => {
   return { value: year, label: `${year}` };
 });
 
+export const stepFields = [
+    [
+    "profilePic",
+    "fullName",
+    "preferedName",
+    "dateOfBirth",
+    "gender",
+    "nationalID",
+    "IDExpiryDate",
+    "passportNumber",
+    "passportExpiryDate",
+    "nationality",
+    "maritalStatus",
+    "countryofIssue",
+    "currentAddress",
+    "permanentAddress",
+    "mobileNumber",
+    "whatsAppNumber",
+    "personalEmail",
+    "officialEmail",
+    ],
+    [
+    "jobTitle",
+    "departmentName",
+    "dateOfJoining",
+    "employeeType",
+    "workCountry",
+    "workOffice",
+    "employeeID",
+    "contractExpiryDate",
+    "superVisorsName",
+    "supervisorsDesignation",
+    ],
+    ["qualifications"],
+    ["workExperiences"],
+    ["skills", "anyResearchProjects", "anyArticles", "researchAreas", "links"],
+    ["contactName", "relationship", "emergencyMobileNumber", "alternateNumber", "emailAddress", "emergencyPermanentAddress"],
+    ["bankName", "branch", "accountTitle", "accountNumber", "bankAddress"],
+    ["langaugeSpoken", "specialSkills", "anyMedicalConditions"],
+    ["documents", "attachments"],
+    ["signature"],
+  ];
+
+  export const labels = [
+    "Personal",
+    "Employment",
+    "Qualifications",
+    "Experience",
+    "Skills",
+    "Emergency",
+    "Banking",
+    "Additional",
+    "Documents",
+    "Declaration",
+  ];

@@ -1,5 +1,5 @@
 import { animateScroll as scroller } from "react-scroll";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import { schema, defaultValues } from "./employee-information-schema";
@@ -15,11 +15,12 @@ export function useEmployeeInformation() {
 
   const navigate = useNavigate();
 
-
   // Initialize useForm with default values
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues,
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
   const { handleSubmit, control, watch, setValue } = methods;
   const profilePic = watch("profilePic");
@@ -44,11 +45,12 @@ export function useEmployeeInformation() {
     const errorFields = Object.keys(errors);
     if (errorFields.length > 0) {
       const firstErrorField = errorFields[0];
-      setSubmitErrorMessage("Some required information is missing. Please check the form and make sure all fields with a * are filled in. Once everything is complete, you’ll be able to submit the form.");
+      setSubmitErrorMessage(
+        "Some required information is missing. Please check the form and make sure all fields with a * are filled in. Once everything is complete, you’ll be able to submit the form."
+      );
       scrollToField(firstErrorField);
     }
   };
-  
 
   // Automatically update permanentAddress when sameAsCurrent is checked
   useEffect(() => {
@@ -257,7 +259,7 @@ export function useEmployeeInformation() {
         toast.error("Failed to submit form. Please try again.");
       } finally {
         setIsSubmitting(false); // Stop loading
-        navigate('/thank-you');
+        navigate("/thank-you");
       }
     }
   };
@@ -284,6 +286,7 @@ export function useEmployeeInformation() {
     anyResearchProjects,
     anyArticles,
     isSubmitting,
-    submitErrorMessage
+    submitErrorMessage,
+    setSubmitErrorMessage,
   };
 }
